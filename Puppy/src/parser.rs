@@ -107,7 +107,7 @@ impl Parser{
         while !self.end() {
             items.push(self.parse_statement_item());
         }
-        Program::from_items(items)
+        Program::create(items)
     }
     // 考虑解决return的表达式问题 b = a + b * c - d
     // b = a + b
