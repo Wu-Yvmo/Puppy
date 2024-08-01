@@ -1,5 +1,6 @@
 use crate::ast::{Block, Expression, Let};
 
+#[derive(Debug)]
 pub struct For{
     pub initialize: Let,
     pub condition: Expression,

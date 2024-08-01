@@ -18,6 +18,7 @@ pub use create::*;
 use crate::token;
 use crate::token::Token;
 
+#[derive(Debug)]
 pub enum Expression{
     Call(Box<Call>),
     Use(Use),

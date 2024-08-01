@@ -1,5 +1,6 @@
 use crate::token::Token;
 
+#[derive(Debug)]
 pub struct Use{
     pub name: Token,
 }

@@ -1,5 +1,6 @@
 use crate::ast::Expression;
 
+#[derive(Debug)]
 pub struct Pack{
     pub sub: Box<Expression>
 }

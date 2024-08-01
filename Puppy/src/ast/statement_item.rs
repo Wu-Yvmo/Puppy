@@ -6,6 +6,7 @@ use crate::token::Token;
 // class定义
 // 表达式
 // let语句
+#[derive(Debug)]
 pub enum StatementItem{
     Class(Class),
     If(If),
@@ -36,7 +37,6 @@ impl StatementItem{
     pub fn from_loop(r#loop: Loop) -> Self {
         StatementItem::Loop(r#loop)
     }
-    // todo!(从这里开始)
     pub fn from_block(block: Block) -> Self {
         StatementItem::Block(block)
     }

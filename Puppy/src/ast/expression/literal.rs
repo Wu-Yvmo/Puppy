@@ -1,6 +1,7 @@
 use std::os::unix::raw::nlink_t;
 use crate::token;
 
+#[derive(Debug)]
 pub struct Literal {
     pub literal: token::Literal,
 }

@@ -1,27 +1,11 @@
 use crate::token::Token;
 
-pub enum Type {
-    TheSelf,
-    Normal(Normal),
+#[derive(Debug)]
+pub struct Type {
+    pub name: Token,
+    pub optional_template_describe: Option<TemplateDescribe>,
 }
 impl Type {
-    pub fn create_self() -> Self {
-        Self::TheSelf
-    }
-    pub fn create_normal(name: Token, optional_template_describe: Option<TemplateDescribe>) -> Self {
-        Self::Normal(Normal{
-            name,
-            optional_template_describe
-        })
-    }
-}
-
-pub struct Normal{
-    pub name: Token,
-    pub optional_template_describe:Option<TemplateDescribe>,
-}
-
-impl Normal{
     pub fn create(name: Token, optional_template_describe: Option<TemplateDescribe>) -> Self {
         Self{
             name,
@@ -30,8 +14,7 @@ impl Normal{
     }
 }
 
-
-
+#[derive(Debug)]
 pub struct TemplateDescribe {
     pub items: Vec<Type>,
 }

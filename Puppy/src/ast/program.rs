@@ -1,7 +1,8 @@
 use crate::ast::StatementItem;
 
+#[derive(Debug)]
 pub struct Program{
-    items: Vec<StatementItem>,
+    pub items: Vec<StatementItem>,
 }
 
 impl Program{

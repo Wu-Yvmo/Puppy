@@ -1,5 +1,6 @@
 use crate::ast::Expression;
 
+#[derive(Debug)]
 pub struct Call{
     pub function: Box<Expression>,
     pub arguments: Vec<Expression>,

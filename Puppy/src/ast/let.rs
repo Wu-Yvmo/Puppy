@@ -1,6 +1,7 @@
 use crate::ast::Expression;
 use crate::token::Token;
 
+#[derive(Debug)]
 pub struct Let{
     pub name: Token,
     pub initialize_value: Expression,

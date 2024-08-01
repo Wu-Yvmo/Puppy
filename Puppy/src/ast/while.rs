@@ -1,5 +1,6 @@
 use crate::ast::{Block, Expression};
 
+#[derive(Debug)]
 pub struct While{
     pub condition: Expression,
     pub body: Block,

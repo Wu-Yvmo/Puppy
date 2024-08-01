@@ -45,7 +45,7 @@
 //! * `\n` : `NewLine`
 //! * `文件结尾` : `EndOfFile`
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Token {
     Identifier{literal: String},
     Literal(Literal),
@@ -58,7 +58,7 @@ pub enum Token {
 
 /// 字面值
 /// 字符串 数字 布尔值
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Literal{
     String{
         literal: String,
@@ -75,7 +75,7 @@ pub enum Literal{
 /// + - * / % !
 /// =
 /// > < <= >= == !=
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Operator{
     Add,
     Sub,
@@ -96,7 +96,7 @@ pub enum Operator{
 
 /// 关键字
 /// if else for while loop fn class let return break
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Keyword{
     If,
     Else,
@@ -112,7 +112,7 @@ pub enum Keyword{
     TheSelf,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Punctuation{
     LeftCurlyBracket,
     RightCurlyBracket,

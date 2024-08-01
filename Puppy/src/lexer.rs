@@ -1,5 +1,6 @@
+use std::cmp::Ordering;
 use crate::token::Token;
-use regex::Regex;
+use regex::{Match, Regex};
 use crate::token::Keyword::{Break, Class, Else, Fn, For, If, Let, Loop, Return, While, Continue, TheSelf};
 use crate::token::Literal::{Boolean, Number, String};
 use crate::token::Operator::{Add, Assign, BooleanAnd, BooleanOr, Div, EQ, GE, GT, LE, LT, Mul, NE, Not, Rem, Sub};
@@ -13,11 +14,11 @@ pub fn lex(code: &str) -> Vec<Token> {
 
 /// .0字段是模式 .1字段用于生成Token
 struct Lexer<'a>{
-    identifier_pattern: Vec<(Regex, fn(&str) -> Token)>,
+    keyword_patterns: Vec<(Regex, fn(&str) -> Token)>,
     literal_patterns: Vec<(Regex, fn(&str) -> Token)>,
     operator_patterns: Vec<(Regex, fn(&str) -> Token)>,
-    keyword_patterns: Vec<(Regex, fn(&str) -> Token)>,
     punctuation_patterns: Vec<(Regex, fn(&str) -> Token)>,
+    identifier_pattern: Vec<(Regex, fn(&str) -> Token)>,
     newline_pattern: Vec<(Regex, fn(&str) -> Token)>,
     code: &'a str,
 }
@@ -194,7 +195,7 @@ impl<'a> Lexer<'a>{
         let mut tokens: Vec<Token> = vec![];
         self.jump_whites();
         while self.code.len() > 0 {
-            tokens.push(self.lex_one());
+            tokens.push(self.tokenize_one());
             self.jump_whites();
         }
         tokens
@@ -206,57 +207,50 @@ impl<'a> Lexer<'a>{
             self.code = &self.code[1..];
         }
     }
-    /// 依次运行规则，选择匹配长度最长的构建token
-    pub fn lex_one(&mut self) -> Token {
-        let patterns: Vec<&(Regex, fn(&str)->Token)> = {
-            let mut patterns: Vec<&(Regex, fn(&str)->Token)> = vec![];
-            for item in &self.identifier_pattern {
-                patterns.push(item);
+    // 新的lex_one
+    fn tokenize_one(&mut self) -> Token {
+        let possible_tokens = vec![
+            self.tokenize_by_patterns(&self.keyword_patterns),
+            self.tokenize_by_patterns(&self.literal_patterns),
+            self.tokenize_by_patterns(&self.operator_patterns),
+            self.tokenize_by_patterns(&self.punctuation_patterns),
+            self.tokenize_by_patterns(&self.identifier_pattern),
+            self.tokenize_by_patterns(&self.newline_pattern),
+        ];
+        for token in possible_tokens {
+            if let Some((token, len)) = token {
+                self.code = &self.code[len..];
+                return token;
             }
-            for item in &self.literal_patterns {
-                patterns.push(item);
-            }
-            for item in &self.operator_patterns {
-                patterns.push(item);
-            }
-            for item in &self.keyword_patterns {
-                patterns.push(item);
-            }
-            for item in &self.punctuation_patterns {
-                patterns.push(item);
-            }
-            for item in &self.newline_pattern {
-                patterns.push(item);
-            }
-            patterns
-        };
-        // 遍历运行正则表达式，收集所有匹配成功的结果
-        let success_match_results: Vec<(&str, fn(&str)->Token)> = {
-            let mut success_match_results: Vec<(&str, fn(&str)->Token)> = vec![];
-            for pattern in patterns {
-                match pattern.0.find(self.code) {
-                    None => (),
-                    Some(match_result) => success_match_results.push((match_result.as_str(), pattern.1)),
+        }
+        panic!("no valid token")
+    }
+    fn tokenize_by_patterns(&self, patterns: &Vec<(Regex, fn(&str) -> Token)>) -> Option<(Token, usize)> {
+        // 1.收集所有的匹配结果和构建函数
+        let match_results= {
+            let mut match_results: Vec<(Match, &fn(&str) -> Token)> = vec![];
+            for (pattern, constructor) in patterns {
+                if let Some(success_match) = pattern.find(self.code) {
+                    match_results.push((success_match, constructor));
                 }
             }
-            success_match_results
+            match_results
         };
-        // 选出匹配长度最长的结果
-        let largest_match_result: &(&str, fn(&str)->Token) = {
-            let mut length = success_match_results.first().unwrap().0.len();
-            let mut index = 0;
-            for current_index in 1..success_match_results.len() {
-                if success_match_results[current_index].0.len() > length {
-                    length = success_match_results[current_index].0.len();
-                    index = current_index;
-                }
+        if match_results.len() == 0 {
+            return None
+        }
+        // 2.选出最长的
+        let max_match = match_results.iter().max_by(|l, r|{
+            if l.0.len() < r.0.len() {
+                return Ordering::Less
             }
-            &success_match_results[index]
-        };
-        // 构造token
-        let token = largest_match_result.1(largest_match_result.0);
-        self.code = &self.code[largest_match_result.0.len()..];
-        token
+            if l.0.len() < r.0.len() {
+                return Ordering::Equal
+            }
+            Ordering::Greater
+        }).unwrap().clone();
+        let token = max_match.1(max_match.0.as_str());
+        Some((token, max_match.0.len()))
     }
 }
 
@@ -265,7 +259,7 @@ mod tests{
     use super::*;
     #[test]
     fn test_lex_generatial() {
-        let code = "abc12 \"hello\" 1234 true false + - * / ! = > < >= <= == != if else for while loop fn class let return break continue {}()[] . && ||\n , :;";
+        let code = "let abc12 \"hello\" 1234 true false + - * / ! = > < >= <= == != if else for while loop fn class let return break continue {}()[] . && ||\n , :;";
         let tokens = lex(code);
         for token in &tokens {
             println!("{}", token.dump())

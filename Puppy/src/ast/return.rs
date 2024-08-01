@@ -1,5 +1,6 @@
 use crate::ast::Expression;
 
+#[derive(Debug)]
 pub struct Return{
     pub optional_expression: Option<Expression>,
 }
