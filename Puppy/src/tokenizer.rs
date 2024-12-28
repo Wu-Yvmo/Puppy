@@ -27,7 +27,7 @@ impl<'a> Lexer<'a>{
     pub fn new(code: &'a str) -> Self {
         Self{
             identifier_pattern: vec![
-                (Regex::new("^[a-zA-Z][a-zA-Z0-9]*").unwrap(), |identifier|-> Token{
+                (Regex::new("^[a-zA-Z_][a-zA-Z0-9_]*").unwrap(), |identifier|-> Token{
                     Token::Identifier {
                         literal: identifier.to_string(),
                     }
@@ -223,7 +223,7 @@ impl<'a> Lexer<'a>{
                 return token;
             }
         }
-        panic!("no valid token")
+        panic!("no valid token: {}", self.code)
     }
     fn tokenize_by_patterns(&self, patterns: &Vec<(Regex, fn(&str) -> Token)>) -> Option<(Token, usize)> {
         // 1.收集所有的匹配结果和构建函数

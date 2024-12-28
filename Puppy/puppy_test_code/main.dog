@@ -1,0 +1,28 @@
+let hello = 1 + 2
+
+class Main {
+    name: str
+    age: Number
+    fn get_name() str {
+        return 9
+        return "hello"
+        return true
+        let a = true
+        if a {
+            a = false
+        } else if b == true {
+            b = false
+        }
+    }
+}
+
+// 文件名：Main.dog
+
+name: str
+age: integer
+
+fn get_name() str {
+    return 9
+}
+
+// 也就是说我们目前应该是不考虑Class这件事了

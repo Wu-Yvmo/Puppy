@@ -1,6 +1,6 @@
 use crate::token::Token;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Type {
     pub name: Token,
     pub optional_template_describe: Option<TemplateDescribe>,
@@ -14,7 +14,7 @@ impl Type {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct TemplateDescribe {
     pub items: Vec<Type>,
 }

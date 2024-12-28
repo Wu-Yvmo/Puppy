@@ -1,6 +1,6 @@
 use crate::ast::Block;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Loop{
     pub body: Block,
 }

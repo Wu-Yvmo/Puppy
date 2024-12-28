@@ -1,12 +1,12 @@
-use crate::ast::StatementItem;
+use crate::ast::Statement;
 
 #[derive(Debug)]
 pub struct Program{
-    pub items: Vec<StatementItem>,
+    pub items: Vec<Statement>,
 }
 
 impl Program{
-    pub fn create(items: Vec<StatementItem>) -> Self {
+    pub fn create(items: Vec<Statement>) -> Self {
         Self{
             items
         }

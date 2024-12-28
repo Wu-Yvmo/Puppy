@@ -59,7 +59,7 @@
 //! Expression永远是要吃掉一个末尾的换行符的
 
 use std::cmp::PartialEq;
-use crate::ast::{Block, Break, Class, ClassData, ClassItem, ClassMethod, Continue, Expression, For, If, IfBranchItem, Let, Loop, Program, Return, StatementItem, TemplateDescribe, Type, While};
+use crate::ast::{Block, Break, Class, ClassData, ClassItem, ClassMethod, Continue, Expression, For, If, IfBranchItem, Let, Loop, Program, Return, Statement, TemplateDescribe, Type, While};
 use crate::token::{Keyword, Operator, Punctuation, Token};
 use crate::token_reader::TokenReader;
 
@@ -111,9 +111,16 @@ impl Parser{
 mod tests{
     use super::*;
     #[test]
+    fn print_wher_am_i() {
+        let args: Vec<_> = std::env::args().collect();
+        println!("{}", args[0])
+    }
+    #[test]
     fn parse_code() {
-        let program = parse("let a = 1 + 2");
-        println!("{:?}", program)
+        let code = std::fs::read_to_string("/Users/wuyumo/Desktop/Puppy/Puppy/puppy_test_code/main").unwrap();
+        println!("{}", code);
+        let program = parse(&code);
+        println!("{:#?}", program)
     }
 }
 

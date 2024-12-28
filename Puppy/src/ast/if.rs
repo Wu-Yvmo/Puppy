@@ -1,6 +1,6 @@
 use crate::ast::{Block, Expression};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct If{
     pub condition: Expression,
     pub true_branch: Block,
@@ -17,7 +17,7 @@ impl If {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum IfBranchItem{
     If(Box<If>),
     Block(Block),
@@ -27,6 +27,7 @@ impl IfBranchItem {
     pub fn create_if(if_branch: If) -> Self {
         Self::If(Box::new(if_branch))
     }
+    
     pub fn create_block(block: Block) -> Self {
         Self::Block(block)
     }

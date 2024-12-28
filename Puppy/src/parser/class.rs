@@ -32,7 +32,7 @@ impl Parser{
         // 读取}
         self.read();
         // 构造class
-        Class::create(items)
+        Class::create(name, items)
     }
     pub(self) fn parse_class_item(&mut self) -> ClassItem {
         if let Token::Keyword(Keyword::Fn) = self.current() {

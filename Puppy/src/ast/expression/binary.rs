@@ -1,7 +1,7 @@
 use crate::ast::Expression;
 use crate::token::Token;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Binary{
     pub left: Box<Expression>,
     pub operator: Token,

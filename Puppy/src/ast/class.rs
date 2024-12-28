@@ -1,20 +1,22 @@
 use crate::ast::{Block, Type};
 use crate::token::Token;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Class{
+    pub name: Token,
     pub items: Vec<ClassItem>,
 }
 
 impl Class {
-    pub fn create(items: Vec<ClassItem>) -> Self {
+    pub fn create(name: Token, items: Vec<ClassItem>) -> Self {
         Self{
+            name,
             items
         }
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ClassItem{
     Data(ClassData),
     Method(ClassMethod),
@@ -24,6 +26,7 @@ impl ClassItem{
     pub fn create_data(name: Token, data_type: Type) -> Self {
         Self::Data(ClassData::create(name, data_type))
     }
+    
     pub fn create_method(name: Token, in_parameters: Vec<ParameterItem>, out_parameter: Type, body: Block) -> Self {
         Self::Method(ClassMethod::create(name, in_parameters, out_parameter, body))
     }
@@ -53,7 +56,7 @@ impl ClassItem{
 // 我简单的说一下两种范型的优缺点
 // 优点是，扩展性好
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ClassData {
     pub name: Token,
     pub data_type: Type,
@@ -68,7 +71,7 @@ impl ClassData {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ClassMethod {
     pub name: Token,
     pub in_parameters: Vec<ParameterItem>,
@@ -87,7 +90,7 @@ impl ClassMethod {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ParameterItem{
     TheSelf,
     Normal(Token, Type)

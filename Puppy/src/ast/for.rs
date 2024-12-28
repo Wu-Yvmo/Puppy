@@ -1,6 +1,6 @@
 use crate::ast::{Block, Expression, Let};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct For{
     pub initialize: Let,
     pub condition: Expression,

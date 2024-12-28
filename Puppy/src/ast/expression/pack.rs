@@ -1,6 +1,6 @@
 use crate::ast::Expression;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Pack{
     pub sub: Box<Expression>
 }

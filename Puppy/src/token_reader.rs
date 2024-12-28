@@ -1,4 +1,4 @@
-use crate::lexer::lex;
+use crate::tokenizer::lex;
 use crate::token::Token;
 
 pub struct TokenReader{

@@ -56,14 +56,23 @@ pub enum Token {
     EndOfFile,
 }
 
+impl Token {
+    pub fn text(&self) -> String {
+        if let Token::Identifier {literal} = self {
+            return literal.clone();
+        }
+        panic!("this token does not have literature")
+    }
+}
+
 /// 字面值
 /// 字符串 数字 布尔值
 #[derive(Clone, Debug)]
-pub enum Literal{
-    String{
+pub enum Literal {
+    String {
         literal: String,
     },
-    Number{
+    Number {
         literal: f64,
     },
     Boolean {
